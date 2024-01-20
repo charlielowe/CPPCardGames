@@ -24,6 +24,7 @@ public:
 	void makeTable(Deck* deck);
 	void printTable(vector<vector<string>> table);
 	void textColor(int color);
+
 private:
 
 };

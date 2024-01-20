@@ -1,9 +1,11 @@
 #include "Card.h"
 
-Card::Card(string newRank, string newSuit) {
+Card::Card(string newRank, string newSuit, bool flipped) {
 	this->rank = newRank;
 	this->suit = newSuit;
 	this->value = 10;
+	this->flipped = flipped;
+	
 	if (rank == "K" || rank == "Q" || rank == "J") {
 		this->value = 10;
 	}
@@ -13,8 +15,25 @@ Card::Card(string newRank, string newSuit) {
 	else {
 		this->value = stoi(rank);
 	}
+	if (flipped == true) {
+		this->cardID = this->rank + this->suit;
+	}
+	else {
+		this->cardID = "**";
+	}
 
-	this->cardID = this->rank + this->suit;
+	
+}
+
+void Card::flip() {
+	this->flipped = !(this->flipped);
+	if (this->flipped) {
+		this->cardID = this->rank + this->suit;
+	}
+	else {
+		this->cardID = "**";
+	}
+	
 }
 
 string Card::getRank() {

@@ -4,13 +4,24 @@
 using namespace std;
 
 const int rows = 7;
-const int cols = 16;
+const int cols = 17;
 
 int currentArea = 0;
 int verticalPos = 1;
 int horizontalPos = 0;
 
 vector<string>* currentCard = {};
+
+string arr1[cols] = { "*H", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr2[cols] = { "*D", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr3[cols] = { "*S", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr4[cols] = { "*C", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr5[cols] = { "SS", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr6[cols] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+string arr7[cols] = { "**", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+
+
+bool isFirstPass = true;
 
 SolitaireGame::SolitaireGame(){
 }
@@ -79,17 +90,49 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos) {
     }
 }
 
+
 void SolitaireGame::makeTable(Deck* deck){
     const int rows = 7;
 	const int cols = 17;
-    string arr1[cols] = { "*H", " ", Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr2[cols] = { "*D", " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr3[cols] = { "*S", " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr4[cols] = { "*C", " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr5[cols] = { "SS", " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr6[cols] = { Deck(*deck).drawCard().getID(), " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " ", " " };
-    string arr7[cols] = { "**", " ", Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), Deck(*deck).drawCard().getID(), " ", " ", " ", " ", " ", " ", " ", " " };
-    vector<string*> array2D = {arr1, arr2, arr3, arr4, arr5, arr6, arr7};
+    
+    if (isFirstPass) {
+        Card tempCard = Deck(*deck).drawCard();
+        tempCard.flip();
+        arr1[2] = tempCard.getID();
+        arr2[2] = Deck(*deck).drawCard().getID();
+        arr2[3] = Deck(*deck).drawCard().getID();
+        arr3[2] = Deck(*deck).drawCard().getID();
+        arr3[3] = Deck(*deck).drawCard().getID();
+        arr3[4] = Deck(*deck).drawCard().getID();
+        arr4[2] = Deck(*deck).drawCard().getID();
+        arr4[3] = Deck(*deck).drawCard().getID();
+        arr4[4] = Deck(*deck).drawCard().getID();
+        arr4[5] = Deck(*deck).drawCard().getID();
+        arr5[2] = Deck(*deck).drawCard().getID();
+        arr5[3] = Deck(*deck).drawCard().getID();
+        arr5[4] = Deck(*deck).drawCard().getID();
+        arr5[5] = Deck(*deck).drawCard().getID();
+        arr5[6] = Deck(*deck).drawCard().getID();
+        arr6[0] = Deck(*deck).drawCard().getID();
+        arr6[2] = Deck(*deck).drawCard().getID();
+        arr6[3] = Deck(*deck).drawCard().getID();
+        arr6[4] = Deck(*deck).drawCard().getID();
+        arr6[5] = Deck(*deck).drawCard().getID();
+        arr6[5] = Deck(*deck).drawCard().getID();
+        arr6[6] = Deck(*deck).drawCard().getID();
+        arr6[7] = Deck(*deck).drawCard().getID();
+        arr7[2] = Deck(*deck).drawCard().getID();
+        arr7[3] = Deck(*deck).drawCard().getID();
+        arr7[4] = Deck(*deck).drawCard().getID();
+        arr7[5] = Deck(*deck).drawCard().getID();
+        arr7[5] = Deck(*deck).drawCard().getID();
+        arr7[6] = Deck(*deck).drawCard().getID();
+        arr7[7] = Deck(*deck).drawCard().getID();
+        arr7[8] = Deck(*deck).drawCard().getID();
+        isFirstPass = false;
+    }
+
+    vector<string*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
 
     // Define some sample cards (replace with your ASCII art)
     vector<string> col1;
@@ -114,7 +157,7 @@ void SolitaireGame::makeTable(Deck* deck){
             }
             else if(array2D[i][x] != " " && array2D[i][x+1]== " ") {
                 table[i].push_back("  _______  ");
-                if (array2D[i][x].substr(0, 2) == "10") {
+                if ((array2D[i][x]).substr(0, 2) == "10") {
                     table[i].push_back(" |" + array2D[i][x] + "    | ");
                 }
                 else {

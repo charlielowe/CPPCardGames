@@ -1,1 +1,2 @@
 D:\VSRepos\BlackJackGame\x64\Debug\CardGames.exe
+D:\VSRepos\CPPCardGames\x64\Debug\CardGames.exe
