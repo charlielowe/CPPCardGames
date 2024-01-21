@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 void ShowConsoleCursor(bool showFlag);
 
 SolitaireGame solitaire = SolitaireGame();
@@ -16,15 +15,13 @@ SolitaireGame solitaire = SolitaireGame();
 Deck deck = Deck();
 
 int main() {
-
     ShowConsoleCursor(false);
     deck.makeDeck();
-    solitaire.makeTable(&deck);   
-
+    solitaire.makeTable(&deck);
+    solitaire.solitaireMain(&deck);
     while (1) {
         solitaire.solitaireLoop(&deck);
     }
-
     return 0;
 }
 

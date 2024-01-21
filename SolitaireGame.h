@@ -21,7 +21,7 @@ public:
 
 	void solitaireLoop(Deck* deck);
 	void solitaireMain(Deck* deck);
-	void useArrowKeys(int* verticalPos, int* horizontalPos);
+	void useArrowKeys(int* verticalPos, int* horizontalPos, Card* firstChoice, Card* secondChoice, int* firstX, int* firstY);
 	void makeTable(Deck* deck);
 	void printTable(vector<vector<string>> table);
 	void textColor(int color);
