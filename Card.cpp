@@ -6,7 +6,7 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 	this->value = 10;
 	this->flipped = flipped;
 	
-	if (rank == "K" || rank == "Q" || rank == "J") {
+	if (rank == "K" || rank == "Q" || rank == "J" || rank == " " || rank == "E" || "S") {
 		this->value = 10;
 	}
 	else if (rank == "A") {

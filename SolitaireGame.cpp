@@ -7,18 +7,26 @@ const int rows = 7;
 const int cols = 17;
 
 int currentArea = 0;
-int verticalPos = 1;
+int verticalPos = 0;
 int horizontalPos = 0;
 
 vector<string>* currentCard = {};
 
-string arr1[cols] = { "*H", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr2[cols] = { "*D", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr3[cols] = { "*S", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr4[cols] = { "*C", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr5[cols] = { "SS", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr6[cols] = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
-string arr7[cols] = { "**", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " };
+Card placeholder = Card(" ", " ", true);
+Card emtpyH = Card(" ", "H", true);
+Card emtpyD = Card(" ", "D", true);
+Card emtpyS = Card(" ", "S", true);
+Card emtpyC = Card(" ", "C", true);
+Card emtpy = Card(" ", " ", false);
+Card emtpySpace = Card("S", "S", true);
+
+Card arr1[cols] = { emtpyH, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder};
+Card arr2[cols] = { emtpyD, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr3[cols] = { emtpyS, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr4[cols] = { emtpyC, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr5[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr6[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr7[cols] = { emtpy, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
 
 
 bool isFirstPass = true;
@@ -42,7 +50,7 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos) {
 
     if (c && c != 224)
     {
-        
+      
     }
     else
     {
@@ -98,41 +106,41 @@ void SolitaireGame::makeTable(Deck* deck){
     if (isFirstPass) {
         Card tempCard = Deck(*deck).drawCard();
         tempCard.flip();
-        arr1[2] = tempCard.getID();
-        arr2[2] = Deck(*deck).drawCard().getID();
-        arr2[3] = Deck(*deck).drawCard().getID();
-        arr3[2] = Deck(*deck).drawCard().getID();
-        arr3[3] = Deck(*deck).drawCard().getID();
-        arr3[4] = Deck(*deck).drawCard().getID();
-        arr4[2] = Deck(*deck).drawCard().getID();
-        arr4[3] = Deck(*deck).drawCard().getID();
-        arr4[4] = Deck(*deck).drawCard().getID();
-        arr4[5] = Deck(*deck).drawCard().getID();
-        arr5[2] = Deck(*deck).drawCard().getID();
-        arr5[3] = Deck(*deck).drawCard().getID();
-        arr5[4] = Deck(*deck).drawCard().getID();
-        arr5[5] = Deck(*deck).drawCard().getID();
-        arr5[6] = Deck(*deck).drawCard().getID();
-        arr6[0] = Deck(*deck).drawCard().getID();
-        arr6[2] = Deck(*deck).drawCard().getID();
-        arr6[3] = Deck(*deck).drawCard().getID();
-        arr6[4] = Deck(*deck).drawCard().getID();
-        arr6[5] = Deck(*deck).drawCard().getID();
-        arr6[5] = Deck(*deck).drawCard().getID();
-        arr6[6] = Deck(*deck).drawCard().getID();
-        arr6[7] = Deck(*deck).drawCard().getID();
-        arr7[2] = Deck(*deck).drawCard().getID();
-        arr7[3] = Deck(*deck).drawCard().getID();
-        arr7[4] = Deck(*deck).drawCard().getID();
-        arr7[5] = Deck(*deck).drawCard().getID();
-        arr7[5] = Deck(*deck).drawCard().getID();
-        arr7[6] = Deck(*deck).drawCard().getID();
-        arr7[7] = Deck(*deck).drawCard().getID();
-        arr7[8] = Deck(*deck).drawCard().getID();
+        arr1[2] = tempCard;
+        arr2[2] = Deck(*deck).drawCard();
+        arr2[3] = Deck(*deck).drawCard();
+        arr3[2] = Deck(*deck).drawCard();
+        arr3[3] = Deck(*deck).drawCard();
+        arr3[4] = Deck(*deck).drawCard();
+        arr4[2] = Deck(*deck).drawCard();
+        arr4[3] = Deck(*deck).drawCard();
+        arr4[4] = Deck(*deck).drawCard();
+        arr4[5] = Deck(*deck).drawCard();
+        arr5[2] = Deck(*deck).drawCard();
+        arr5[3] = Deck(*deck).drawCard();
+        arr5[4] = Deck(*deck).drawCard();
+        arr5[5] = Deck(*deck).drawCard();
+        arr5[6] = Deck(*deck).drawCard();
+        //arr6[0] = Deck(*deck).drawCard();
+        arr6[2] = Deck(*deck).drawCard();
+        arr6[3] = Deck(*deck).drawCard();
+        arr6[4] = Deck(*deck).drawCard();
+        arr6[5] = Deck(*deck).drawCard();
+        arr6[5] = Deck(*deck).drawCard();
+        arr6[6] = Deck(*deck).drawCard();
+        arr6[7] = Deck(*deck).drawCard();
+        arr7[2] = Deck(*deck).drawCard();
+        arr7[3] = Deck(*deck).drawCard();
+        arr7[4] = Deck(*deck).drawCard();
+        arr7[5] = Deck(*deck).drawCard();
+        arr7[5] = Deck(*deck).drawCard();
+        arr7[6] = Deck(*deck).drawCard();
+        arr7[7] = Deck(*deck).drawCard();
+        arr7[8] = Deck(*deck).drawCard();
         isFirstPass = false;
     }
 
-    vector<string*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
+    vector<Card*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
 
     // Define some sample cards (replace with your ASCII art)
     vector<string> col1;
@@ -148,32 +156,32 @@ void SolitaireGame::makeTable(Deck* deck){
     
     for (int i = 0; i < rows; i++) {
         for (int x = 0; x < cols; x++) {
-            if (array2D[i][x] == "SS") {
+            if (array2D[i][x].getID() == "SS") {
                 table[i].push_back("           ");
                 table[i].push_back("           ");
                 table[i].push_back("           ");
                 table[i].push_back("           ");
                 table[i].push_back("           ");
             }
-            else if(array2D[i][x] != " " && array2D[i][x+1]== " ") {
+            else if(array2D[i][x].getID() != "  " && array2D[i][x+1].getID() == "  ") {
                 table[i].push_back("  _______  ");
-                if ((array2D[i][x]).substr(0, 2) == "10") {
-                    table[i].push_back(" |" + array2D[i][x] + "    | ");
+                if ((array2D[i][x].getID()).substr(0, 2) == "10") {
+                    table[i].push_back(" |" + array2D[i][x].getID() + "    | ");
                 }
                 else {
-                    table[i].push_back(" |" + array2D[i][x] + "     | ");
+                    table[i].push_back(" |" + array2D[i][x].getID() + "     | ");
                 }
                 table[i].push_back(" |       | ");
                 table[i].push_back(" |       | ");
                 table[i].push_back(" |_______| ");
             }
-            else if(array2D[i][x] != " " && array2D[i][x + 1] != " ") {
+            else if(array2D[i][x].getID() != "  " && array2D[i][x+1].getID() != "  ") {
                 table[i].push_back("  _______  ");
-                if (array2D[i][x].substr(0, 2) == "10") {
-                    table[i].push_back(" |" + array2D[i][x] + "    | ");
+                if (array2D[i][x].getID().substr(0, 2) == "10") {
+                    table[i].push_back(" |" + array2D[i][x].getID() + "    | ");
                 }
                 else {
-                    table[i].push_back(" |" + array2D[i][x] + "     | ");
+                    table[i].push_back(" |" + array2D[i][x].getID() + "     | ");
                 }
             }
             else {
