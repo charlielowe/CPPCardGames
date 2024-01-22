@@ -12,6 +12,7 @@ public:
 	int getValue();
 	string getID();
 	void flip();
+	void setValue(int newValue);
 
 private:
 	bool flipped;

@@ -3,10 +3,9 @@
 Card::Card(string newRank, string newSuit, bool flipped) {
 	this->rank = newRank;
 	this->suit = newSuit;
-	this->value = 10;
 	this->flipped = flipped;
 	
-	if (rank == "K" || rank == "Q" || rank == "J" || rank == " " || rank == "E" || "S") {
+	if (rank == "K" || rank == "Q" || rank == "J" || rank == " " || rank == "E" || rank == "S") {
 		this->value = 10;
 	}
 	else if (rank == "A") {
@@ -50,4 +49,8 @@ int Card::getValue() {
 
 string Card::getID() {
 	return this->cardID;
+}
+
+void Card::setValue(int newValue) {
+	this->value = newValue;
 }
