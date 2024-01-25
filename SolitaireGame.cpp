@@ -181,7 +181,6 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* fir
     }
 }
 
-
 void SolitaireGame::makeTable(Deck* deck){
 
     Card tempCard = Deck(*deck).drawCard();

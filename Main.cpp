@@ -11,9 +11,6 @@ using namespace std;
 
 void ShowConsoleCursor(bool showFlag);
 
-
-
-
 Deck deck = Deck();
 
 int main() {
@@ -51,7 +48,6 @@ int main() {
             }
         }
     }
-    
     
     return 0;
 }

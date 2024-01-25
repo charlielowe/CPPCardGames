@@ -10,8 +10,8 @@ void BlackJackGame::blackJackMain(Deck& deck) {
 
     vector<Card> playerHand;
     vector<Card> dealerHand;
-    int playerTotal;
-    int dealerTotal;
+    int playerTotal = 0;
+    int dealerTotal = 0;
 
     bool quit = false;
 	// Get given 2 cards
@@ -23,9 +23,10 @@ void BlackJackGame::blackJackMain(Deck& deck) {
 
 	// Draw first 2 cards
     cout << endl;
-    dealerHand.push_back(deck.drawCard());
-    dealerHand.push_back(deck.drawCard());
     Card tempPlayerCard = deck.drawCard();
+    tempPlayerCard.flip();
+    dealerHand.push_back(tempPlayerCard);
+    tempPlayerCard = deck.drawCard();
     tempPlayerCard.flip();
 	playerHand.push_back(tempPlayerCard);
     tempPlayerCard = deck.drawCard();
@@ -35,20 +36,21 @@ void BlackJackGame::blackJackMain(Deck& deck) {
     while (!quit) {
         
         playerTotal = 0;
-        dealerTotal = 0;
         for (Card& card : playerHand) {
             playerTotal += card.getValue();
         }
+        dealerTotal = 0;
         for (Card& card : dealerHand) {
             dealerTotal += card.getValue();
         }
+        
         if (playerTotal > 21) {
             cout << "Your new total is " << playerTotal << endl;
             cout << "BUST! You lose!" << endl;
             quit = true;
         }
         else {
-            cout << "Dealer Hand: " << endl;
+            cout << "Dealer Hand: Total = " << dealerTotal << endl;
             makeAscii(dealerHand);
             cout << endl;
             cout << endl;
@@ -107,8 +109,14 @@ void BlackJackGame::blackJackMain(Deck& deck) {
                 system("cls");
                 cout << "Your card total is: " << playerTotal << endl;
             }
-            if (dealerTotal < 16) {
-                dealerHand.push_back(deck.drawCard());
+            if (dealerTotal <= 16) {
+                tempPlayerCard = deck.drawCard();
+                tempPlayerCard.flip();
+                dealerHand.push_back(tempPlayerCard);
+                dealerTotal = 0;
+                for (Card& card : dealerHand) {
+                    dealerTotal += card.getValue();
+                }
             }
             if (stoi(choice) == 2) {
                 cout << "The dealer's total is: " << dealerTotal << endl;
@@ -119,7 +127,7 @@ void BlackJackGame::blackJackMain(Deck& deck) {
                 makeAscii(dealerHand);
                 cout << endl;
                 cout << endl;
-                cout << "Player Hand: Total = " << playerTotal << endl;
+                cout << "Player Hand: " << endl;
                 makeAscii(playerHand);
                 if (dealerTotal <= 21) {
                     if (playerTotal > dealerTotal) {
@@ -147,7 +155,6 @@ void BlackJackGame::blackJackMain(Deck& deck) {
 }
 
 void BlackJackGame::makeAscii(vector<Card>& Hand){
-
 
     // Create a vector of cards
     vector<vector<string>> table;
