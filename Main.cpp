@@ -7,6 +7,7 @@
 #include "Deck.h"
 #include "BlackJackGame.h"
 
+#pragma comment(lib, "winmm.lib")
 using namespace std;
 
 void ShowConsoleCursor(bool showFlag);
@@ -14,6 +15,7 @@ void ShowConsoleCursor(bool showFlag);
 Deck deck = Deck();
 
 int main() {
+    PlaySound(TEXT("IceTheme.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     while (true) {
         string strchoice;
         bool choiceFound = false;

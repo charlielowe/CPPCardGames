@@ -61,13 +61,19 @@ void Deck::makeDeck() {
 	}
 }
 
+void Deck::shuffleDeck() {
+	random_device rd;
+	mt19937 g(rd());
+
+	std::shuffle(this->cardsDeck.begin(), this->cardsDeck.end(), g);
+}
+
 vector<Card> Deck::getDeck() {
 	return(this->cardsDeck);
 }
 
 Card Deck::drawCard() {
-	int randomIndex = rand() % this->cardsDeck.size();
-	Card drawnCard = this->cardsDeck[randomIndex];
-	this->cardsDeck.erase(this->cardsDeck.begin() + randomIndex);
+	Card drawnCard = this->cardsDeck.back();
+	this->cardsDeck.pop_back();
 	return drawnCard;
 }

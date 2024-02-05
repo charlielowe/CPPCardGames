@@ -1,4 +1,6 @@
 #include "BlackJackGame.h"
+
+
 using namespace std;
 
 
@@ -23,6 +25,7 @@ void BlackJackGame::blackJackMain(Deck& deck) {
 
 	// Draw first 2 cards
     cout << endl;
+    deck.shuffleDeck();
     Card tempPlayerCard = deck.drawCard();
     tempPlayerCard.flip();
     dealerHand.push_back(tempPlayerCard);
@@ -121,9 +124,7 @@ void BlackJackGame::blackJackMain(Deck& deck) {
             if (stoi(choice) == 2) {
                 cout << "The dealer's total is: " << dealerTotal << endl;
                 cout << "Dealer Hand: " << endl;
-                for (Card& card : dealerHand) {
-                    card.flip();
-                }
+                
                 makeAscii(dealerHand);
                 cout << endl;
                 cout << endl;
