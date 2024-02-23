@@ -35,18 +35,22 @@ int main() {
         if (stoi(strchoice) == 1) { // Blackjack
             BlackJackGame blackjack = BlackJackGame();
             system("cls");
+            ShowConsoleCursor(true);
             deck.makeDeck();
+            deck.shuffleDeck();
             blackjack.blackJackMain(deck);
         }
         else { // Solitaire
+            deck.shuffleDeck();
             SolitaireGame solitaire = SolitaireGame();
             system("cls");
             ShowConsoleCursor(false);
             deck.makeDeck();
-            solitaire.makeTable(&deck);
-            solitaire.solitaireMain(&deck);
+            deck.shuffleDeck();
+            solitaire.makeTable(deck);
+            solitaire.solitaireMain(deck);
             while (1) {
-                solitaire.solitaireLoop(&deck);
+                solitaire.solitaireLoop(deck);
             }
         }
     }

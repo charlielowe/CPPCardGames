@@ -37,7 +37,7 @@ Card secondChoice = emtpy;
 SolitaireGame::SolitaireGame(){
 }
 
-void SolitaireGame::solitaireMain(Deck* deck) {
+void SolitaireGame::solitaireMain(Deck& deck) {
     if (firstChoice.getID() != "**") {
         cout << "First Choice: " << firstChoice.getID() << endl;
     }
@@ -52,7 +52,7 @@ void SolitaireGame::solitaireMain(Deck* deck) {
     }
 }
 
-void SolitaireGame::solitaireLoop(Deck* deck) {
+void SolitaireGame::solitaireLoop(Deck& deck) {
     useArrowKeys(&verticalPos, &horizontalPos, &firstChoice, &secondChoice, &firstX, &firstY);
     system("cls");
     makeTable(deck);
@@ -181,55 +181,55 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* fir
     }
 }
 
-void SolitaireGame::makeTable(Deck* deck){
+void SolitaireGame::makeTable(Deck& deck){
 
-    Card tempCard = Deck(*deck).drawCard();
+    Card tempCard = deck.drawCard();
     tempCard.flip();
     if (isFirstPass) {
         arr1[2] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr2[2] = Deck(*deck).drawCard();
+        arr2[2] = deck.drawCard();
         arr2[3] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr3[2] = Deck(*deck).drawCard();
-        arr3[3] = Deck(*deck).drawCard();
+        arr3[2] = deck.drawCard();
+        arr3[3] = deck.drawCard();
         arr3[4] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr4[2] = Deck(*deck).drawCard();
-        arr4[3] = Deck(*deck).drawCard();
-        arr4[4] = Deck(*deck).drawCard();
+        arr4[2] = deck.drawCard();
+        arr4[3] = deck.drawCard();
+        arr4[4] = deck.drawCard();
         arr4[5] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr5[2] = Deck(*deck).drawCard();
-        arr5[3] = Deck(*deck).drawCard();
-        arr5[4] = Deck(*deck).drawCard();
-        arr5[5] = Deck(*deck).drawCard();
+        arr5[2] = deck.drawCard();
+        arr5[3] = deck.drawCard();
+        arr5[4] = deck.drawCard();
+        arr5[5] = deck.drawCard();
         arr5[6] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
         arr6[0] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr6[2] = Deck(*deck).drawCard();
-        arr6[3] = Deck(*deck).drawCard();
-        arr6[4] = Deck(*deck).drawCard();
-        arr6[5] = Deck(*deck).drawCard();
-        arr6[5] = Deck(*deck).drawCard();
-        arr6[6] = Deck(*deck).drawCard();
+        arr6[2] = deck.drawCard();
+        arr6[3] = deck.drawCard();
+        arr6[4] = deck.drawCard();
+        arr6[5] = deck.drawCard();
+        arr6[5] = deck.drawCard();
+        arr6[6] = deck.drawCard();
         arr6[7] = tempCard;
-        tempCard = Deck(*deck).drawCard();
+        tempCard = deck.drawCard();
         tempCard.flip();
-        arr7[2] = Deck(*deck).drawCard();
-        arr7[3] = Deck(*deck).drawCard();
-        arr7[4] = Deck(*deck).drawCard();
-        arr7[5] = Deck(*deck).drawCard();
-        arr7[5] = Deck(*deck).drawCard();
-        arr7[6] = Deck(*deck).drawCard();
-        arr7[7] = Deck(*deck).drawCard();
+        arr7[2] = deck.drawCard();
+        arr7[3] = deck.drawCard();
+        arr7[4] = deck.drawCard();
+        arr7[5] = deck.drawCard();
+        arr7[5] = deck.drawCard();
+        arr7[6] = deck.drawCard();
+        arr7[7] = deck.drawCard();
         arr7[8] = tempCard;
         isFirstPass = false;
     }

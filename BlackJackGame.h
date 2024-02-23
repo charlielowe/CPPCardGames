@@ -12,5 +12,6 @@ public:
 	void blackJackMain(Deck& deck);
 	void makeAscii(vector<Card>& Hand);
 	void printHand(vector<vector<string>>& table, vector<Card>& Hand);
+	void aceCheck(Card& tempCard, int& total);
 };
 

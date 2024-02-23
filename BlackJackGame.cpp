@@ -25,15 +25,23 @@ void BlackJackGame::blackJackMain(Deck& deck) {
 
 	// Draw first 2 cards
     cout << endl;
-    deck.shuffleDeck();
     Card tempPlayerCard = deck.drawCard();
     tempPlayerCard.flip();
+    if (tempPlayerCard.getRank() == "A") {
+        aceCheck(tempPlayerCard, dealerTotal);
+    }
     dealerHand.push_back(tempPlayerCard);
     tempPlayerCard = deck.drawCard();
     tempPlayerCard.flip();
+    if (tempPlayerCard.getRank() == "A") {
+        aceCheck(tempPlayerCard, playerTotal);
+    }
 	playerHand.push_back(tempPlayerCard);
     tempPlayerCard = deck.drawCard();
     tempPlayerCard.flip();
+    if (tempPlayerCard.getRank() == "A") {
+        aceCheck(tempPlayerCard, playerTotal);
+    }
 	playerHand.push_back(tempPlayerCard);
 
     while (!quit) {
@@ -79,42 +87,20 @@ void BlackJackGame::blackJackMain(Deck& deck) {
                 tempPlayerCard = deck.drawCard();
                 tempPlayerCard.flip();
                 if (tempPlayerCard.getRank() == "A") {
-                    string aceChoice;
-                    bool aceChoiceFound = false;
-                    while (!aceChoiceFound) {
-                        cin.clear();
-                        cin.sync();
-                        cout << "You drew an Ace, would you like the value to be 1 or 11? ";
-                        getline(cin, aceChoice);
-                        if ((aceChoice) == "1") {
-                            tempPlayerCard.setValue(1);
-                            aceChoiceFound = true;
-                            system("cls");
-                        }
-                        else if ((aceChoice) == "11") {
-                            tempPlayerCard.setValue(11);
-                            aceChoiceFound = true;
-                            system("cls");
-                        }
-                        else {
-                            cout << "That wasn't an option." << endl;
-                        }
-                    }
-                    
+                    aceCheck(tempPlayerCard, playerTotal);
                 }
-                else {
-                    system("cls");
-                    cout << "You drew a " << tempPlayerCard.getID() << endl;
-                }
+                system("cls");
+                cout << "You drew a " << tempPlayerCard.getID() << endl;
+                
                 playerHand.push_back(tempPlayerCard);
             }
-            else {
-                system("cls");
-                cout << "Your card total is: " << playerTotal << endl;
-            }
+
             if (dealerTotal <= 16) {
                 tempPlayerCard = deck.drawCard();
                 tempPlayerCard.flip();
+                if (tempPlayerCard.getRank() == "A") {
+                    aceCheck(tempPlayerCard, dealerTotal);
+                }
                 dealerHand.push_back(tempPlayerCard);
                 dealerTotal = 0;
                 for (Card& card : dealerHand) {
@@ -122,25 +108,28 @@ void BlackJackGame::blackJackMain(Deck& deck) {
                 }
             }
             if (stoi(choice) == 2) {
-                cout << "The dealer's total is: " << dealerTotal << endl;
-                cout << "Dealer Hand: " << endl;
+                system("cls");
+                cout << "Dealer Hand: Total = " << dealerTotal << endl;
                 
                 makeAscii(dealerHand);
                 cout << endl;
                 cout << endl;
-                cout << "Player Hand: " << endl;
+                cout << "Player Hand: Total = " << playerTotal << endl;
                 makeAscii(playerHand);
                 if (dealerTotal <= 21) {
                     if (playerTotal > dealerTotal) {
+                        cout << "Your score is higher than the dealers." << endl;
                         cout << "You win!!" << endl;
                         quit = true;
                     }
                     else {
+                        cout << "Your score is lower than the dealers." << endl;
                         cout << "You lose!" << endl;
                         quit = true;
                     }
                 }
                 else {
+                    cout << "The dealer went bust." << endl;
                     cout << "You win!!" << endl;
                     quit = true;
                 }
@@ -187,5 +176,12 @@ void BlackJackGame::printHand(vector<vector<string>>& table, vector<Card>& Hand)
 
         }
         cout << '\n';
+    }
+}
+
+
+void BlackJackGame::aceCheck(Card& tempCard, int& total) {
+    if ((total + 11) > 21) {
+        tempCard.setValue(1);
     }
 }
