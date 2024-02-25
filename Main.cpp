@@ -12,12 +12,14 @@ using namespace std;
 
 void ShowConsoleCursor(bool showFlag);
 
-Deck deck = Deck();
+Deck deck = Deck(); // Create new deck
 
 int main() {
-    PlaySound(TEXT("IceTheme.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-    while (true) {
-        string strchoice;
+    //PlaySound(TEXT("IceTheme.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+    while (true) { // Game loop
+
+        // Ask player which game they would like to play
+        string strchoice; 
         bool choiceFound = false;
         cout << "Would you like to play (1)Blackjack or (2)Solitare?" << endl;
         while (choiceFound == false) {
@@ -32,6 +34,8 @@ int main() {
                 choiceFound = true;
             }
         }
+
+
         if (stoi(strchoice) == 1) { // Blackjack
             BlackJackGame blackjack = BlackJackGame();
             system("cls");
@@ -58,7 +62,8 @@ int main() {
     return 0;
 }
 
-void ShowConsoleCursor(bool showFlag) {
+// Toggle if cursor is shown or not
+void ShowConsoleCursor(bool showFlag) { 
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 
     CONSOLE_CURSOR_INFO     cursorInfo;
@@ -67,4 +72,3 @@ void ShowConsoleCursor(bool showFlag) {
     cursorInfo.bVisible = showFlag; // set the cursor visibility
     SetConsoleCursorInfo(out, &cursorInfo);
 }
-

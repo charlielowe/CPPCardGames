@@ -1,9 +1,10 @@
 #include "Deck.h"
 
 Deck::Deck() {
-	srand(time(NULL));
+	srand(time(NULL)); // Sets random seed to the value of time so it's always different
 }
 
+// Function that loops 13 times and each time adds 4 cards to deck (1 for each suit). Manually updates card rank for picture cards
 void Deck::makeDeck() {
 	for (int i = 1; i <= 13; i++) {
 		if (i == 1) {
@@ -61,6 +62,7 @@ void Deck::makeDeck() {
 	}
 }
 
+// Shuffles deck
 void Deck::shuffleDeck() {
 	random_device rd;
 	mt19937 g(rd());
@@ -68,10 +70,12 @@ void Deck::shuffleDeck() {
 	std::shuffle(this->cardsDeck.begin(), this->cardsDeck.end(), g);
 }
 
+// Returns deck
 vector<Card> Deck::getDeck() {
 	return(this->cardsDeck);
 }
 
+// Returns card from top of deck and removes it from deck vector
 Card Deck::drawCard() {
 	Card drawnCard = this->cardsDeck.back();
 	this->cardsDeck.pop_back();

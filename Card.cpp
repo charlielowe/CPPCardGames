@@ -5,6 +5,7 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 	this->suit = newSuit;
 	this->flipped = flipped;
 	
+	// Sets the value of the picture cards
 	if (rank == "K" || rank == "Q" || rank == "J" || rank == " " || rank == "E" || rank == "S") {
 		this->value = 10;
 	}
@@ -14,6 +15,8 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 	else {
 		this->value = stoi(rank);
 	}
+
+	// Sets the card ID depending on if card is flipped
 	if (flipped == true) {
 		this->cardID = this->rank + this->suit;
 	}
@@ -24,6 +27,7 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 	
 }
 
+// Swaps flipped bool to opposite of what it current is, updates card ID
 void Card::flip() {
 	this->flipped = !(this->flipped);
 	if (this->flipped) {

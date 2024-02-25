@@ -12,11 +12,11 @@ class Deck
 {
 public:
 	Deck();
-	void makeDeck();
-	void shuffleDeck();
-	vector<Card> getDeck();
-	Card drawCard();
+	void makeDeck(); // Fills deck with 52 cards
+	void shuffleDeck(); // Shuffles deck
+	vector<Card> getDeck(); // Returns deck vector
+	Card drawCard(); // Returns top card in deck and removes it from deck
 private:
-	vector<Card> cardsDeck;
+	vector<Card> cardsDeck; // Vector containing all cards
 };
 

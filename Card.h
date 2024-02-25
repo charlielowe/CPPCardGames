@@ -7,12 +7,16 @@ class Card
 {
 public:
 	Card(string newRank, string newSuit, bool flipped);
+	
+	// Getters and setters
 	string getRank();
 	string getSuit();
 	int getValue();
 	string getID();
-	void flip();
 	void setValue(int newValue);
+
+	void flip(); // Flips the card
+	
 
 private:
 	bool flipped;
