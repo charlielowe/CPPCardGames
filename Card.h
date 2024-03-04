@@ -13,6 +13,7 @@ public:
 	string getSuit();
 	int getValue();
 	string getID();
+	string getColour();
 	void setValue(int newValue);
 
 	void flip(); // Flips the card
@@ -24,5 +25,6 @@ private:
 	string suit;
 	int value;
 	string cardID;
+	string colour;
 };
 

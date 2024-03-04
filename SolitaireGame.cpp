@@ -50,10 +50,12 @@ void SolitaireGame::solitaireMain(Deck& deck) {
     else if (secondChoice.getID() == "**" && firstChoice.getID() != "**") {
         cout << "Press enter to select your second card, then enter again to confirm it or any other key to cancel." << endl;
     }
+
+  
 }
 
 void SolitaireGame::solitaireLoop(Deck& deck) {
-    useArrowKeys(&verticalPos, &horizontalPos, &firstChoice, &secondChoice, &firstX, &firstY);
+    useArrowKeys(verticalPos, horizontalPos, firstChoice, secondChoice, firstX, firstY);
     system("cls");
     makeTable(deck);
     
@@ -68,38 +70,53 @@ void SolitaireGame::solitaireLoop(Deck& deck) {
     }
 }
 
-void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* firstChoice, Card* secondChoice, int* firstX, int* firstY) {
+void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY) {
     int c, ex;
     c = _getch();
 
 
     if (c && c != 224)
     {
-        if (c == KEY_ENTER) {
-            if (array2D[*horizontalPos][*verticalPos].getID() != "**") {
-                cout << array2D[*horizontalPos][*verticalPos].getID() << endl;
+        if (c == KEY_ENTER) { // User presses enter the first time to choose a card
+            if (array2D[horizontalPos][verticalPos].getID() != "**") { // If card isn't flipped
+                cout << array2D[horizontalPos][verticalPos].getID() << endl; // Print out card just selected
                 int y = _getch();
-                if (y == KEY_ENTER) {
-                    if ((*firstChoice).getID() == "**") {
-                        *firstChoice = array2D[*horizontalPos][*verticalPos];
-                        *firstX = *horizontalPos;
-                        *firstY = *verticalPos;
+                if (y == KEY_ENTER) { // Player presses enter again to confrim the card
+                    if ((firstChoice).getID() == "**") { // firstChoice is set to card "emtpy" by default which has an ID of ** so checking to make sure the first choice hasn't already been selected
+                        firstChoice = array2D[horizontalPos][verticalPos]; // Sets firstChoice to card currently selected
+                        firstX = horizontalPos; 
+                        firstY = verticalPos;
                     }
-                    else {
-                        *secondChoice = array2D[*horizontalPos][*verticalPos];
-                        array2D[*horizontalPos][*verticalPos + 1] = *firstChoice;
-                        array2D[*firstX][*firstY] = placeholder;
-                        if (array2D[*firstX][*firstY - 1].getID() == "**") {
-                            array2D[*firstX][*firstY - 1].flip();
+                    else { // If first choice has already been set
+                        secondChoice = array2D[horizontalPos][verticalPos]; // Second choice is set to the selected card
+                        if (firstChoice.getColour() == secondChoice.getColour()) {
+                            cout << "Cards must be alternating in colour. Press a key to continue." << endl;
+                            firstChoice = emtpy;
+                            secondChoice = emtpy;
+                            _getch();
                         }
-                        *firstChoice = emtpy;
-                        *secondChoice = emtpy;
+                        else if ((firstChoice.getValue() + 1) != secondChoice.getValue()) {
+                            cout << "Cards must be ascending in value. Press a key to continue." << endl;
+                            firstChoice = emtpy;
+                            secondChoice = emtpy;
+                            _getch();
+                        }
+                        else {
+                            array2D[horizontalPos][verticalPos + 1] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
+                            array2D[firstX][firstY] = placeholder; // Sets where the first card originally was to a blank card since it's been moved
+                            if (array2D[firstX][firstY - 1].getID() == "**") { // If card below where original card was flipped, unflip it since there now isn't a card ontop of it
+                                array2D[firstX][firstY - 1].flip();
+                            }
+                            firstChoice = emtpy;
+                            secondChoice = emtpy;
+                        }
+                        
                     }
                     
                 }
             }
             else {
-                cout << "You cannot select a card that isn't flipped! Press a key to continue" << endl;
+                cout << "You cannot select a card that isn't flipped! Press a key to continue." << endl;
                 _getch();
             }
             
@@ -112,25 +129,25 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* fir
 
         {
         case KEY_UP     /* H */:
-            if (*verticalPos > 0) {
-                *verticalPos = *verticalPos - 1;
-                while (array2D[*horizontalPos][*verticalPos].getID() == "  ") {
-                    *verticalPos = *verticalPos - 1;
+            if (verticalPos > 0) {
+                verticalPos = verticalPos - 1;
+                while (array2D[horizontalPos][verticalPos].getID() == "  ") {
+                    verticalPos = verticalPos - 1;
                 }
-                if (array2D[*horizontalPos][*verticalPos].getID() == "SS") {
-                    *verticalPos = *verticalPos + 2;
+                if (array2D[horizontalPos][verticalPos].getID() == "SS") {
+                    verticalPos = verticalPos + 2;
                 }
             }
             break;
         case KEY_DOWN   /* K */:
-            if (*verticalPos < 16) {
-                *verticalPos = *verticalPos + 1;
-                if (array2D[*horizontalPos][*verticalPos].getID() == "  " && array2D[*horizontalPos][*verticalPos + 1].getID() == "  ") {
-                    *verticalPos = *verticalPos - 1;
+            if (verticalPos < 16) {
+                verticalPos = verticalPos + 1;
+                if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos][verticalPos + 1].getID() == "  ") {
+                    verticalPos = verticalPos - 1;
                 }
                 else {
-                    while (array2D[*horizontalPos][*verticalPos].getID() == "  " || array2D[*horizontalPos][*verticalPos].getID() == "SS") {
-                        *verticalPos = *verticalPos + 1;
+                    while (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") {
+                        verticalPos = verticalPos + 1;
                     }
                 }
                 
@@ -138,21 +155,21 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* fir
             }
             break;
         case KEY_LEFT   /* M */:
-            if (*horizontalPos > 0) {
-                *horizontalPos = *horizontalPos - 1;
-                if (*horizontalPos > 0) {
-                    if (array2D[*horizontalPos][*verticalPos].getID() == "  " && array2D[*horizontalPos - 1][*verticalPos].getID() == "  ") {
-                        *horizontalPos = *horizontalPos + 1;
+            if (horizontalPos > 0) {
+                horizontalPos = horizontalPos - 1;
+                if (horizontalPos > 0) {
+                    if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos - 1][verticalPos].getID() == "  ") {
+                        horizontalPos = horizontalPos + 1;
                     }
                     else {
-                        while (array2D[*horizontalPos][*verticalPos].getID() == "  " || array2D[*horizontalPos][*verticalPos].getID() == "SS") {
-                            *horizontalPos = *horizontalPos - 1;
+                        while (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") {
+                            horizontalPos = horizontalPos - 1;
                         }
                     }
                 }
                 else {
-                    if (array2D[*horizontalPos][*verticalPos].getID() == "  ") {
-                        *horizontalPos = *horizontalPos + 1;
+                    if (array2D[horizontalPos][verticalPos].getID() == "  ") {
+                        horizontalPos = horizontalPos + 1;
 
                     }
                 }
@@ -161,14 +178,14 @@ void SolitaireGame::useArrowKeys(int* verticalPos, int* horizontalPos, Card* fir
             }
             break;
         case KEY_RIGHT: /* P */
-            if (*horizontalPos < 6) {
-                *horizontalPos = *horizontalPos + 1;
-                if (array2D[*horizontalPos][*verticalPos].getID() == "  " && array2D[*horizontalPos + 1][*verticalPos].getID() == "  ") {
-                    *horizontalPos = *horizontalPos - 1;
+            if (horizontalPos < 6) {
+                horizontalPos = horizontalPos + 1;
+                if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos + 1][verticalPos].getID() == "  ") {
+                    horizontalPos = horizontalPos - 1;
                 }
                 else {
-                    while (array2D[*horizontalPos][*verticalPos].getID() == "  " || array2D[*horizontalPos][*verticalPos].getID() == "SS") {
-                        *horizontalPos = *horizontalPos + 1;
+                    while (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") {
+                        horizontalPos = horizontalPos + 1;
                     }
                 }
 
@@ -259,7 +276,7 @@ void SolitaireGame::makeTable(Deck& deck){
             }
             else if(array2D[i][x].getID() != "  " && array2D[i][x+1].getID() == "  ") {
                 table[i].push_back("  _______  ");
-                if ((array2D[i][x].getID()).substr(0, 2) == "10") {
+                if (array2D[i][x].getID().substr(0,2) == "10") {
                     if (&(array2D[horizontalPos][verticalPos]) == &(array2D[i][x])) {
                         table[i].push_back(" |" + array2D[i][x].getID() + "O   | ");
                     }
@@ -320,20 +337,41 @@ void SolitaireGame::makeTable(Deck& deck){
 }
 
 void SolitaireGame::printTable(vector<vector<string>> table) {
-    string isO, is010;
+    string isO, isO10, suit, suit10;
     for (int i = 0; i < 38; i++) { // Loops for the ammount of strings inside cards[0] (which is card1) 
-
         for (int x = 0; x < rows; x++) { // For every col in table array
             // Adjust spacing between cards as needed
             isO = table[x][i].substr(4, 1);
-            is010 = table[x][i].substr(5, 1);
-            if (isO == "O" || is010 == "O") {
+            isO10 = table[x][i].substr(5, 1);
+            suit = table[x][i].substr(3, 1);
+            suit10 = table[x][i].substr(4, 1);
+            if (isO == "O" || isO10 == "O") {
                 textColor(10);
             }
             else{
                 textColor(15);
             }
-            cout << table[x][i] << "   ";
+            if ((suit == "H" || suit == "D" || suit10 == "H" || suit10 == "D") && isO != "O" && isO10 != "O") {
+                textColor(15);
+                cout << table[x][i].substr(0, 2);
+                textColor(12);
+                cout << table[x][i].substr(2, 3);
+                textColor(15);
+                cout << table[x][i].substr(5, 7) << "   ";
+
+            }
+            else if((suit == "S" || suit == "C" || suit10 == "S" || suit10 == "C") && isO != "O" && isO10 != "O") {
+                textColor(15);
+                cout << table[x][i].substr(0, 2);
+                textColor(9);
+                cout << table[x][i].substr(2, 3);
+                textColor(15);
+                cout << table[x][i].substr(5, 7) << "   ";
+            }
+            else {
+                cout << table[x][i] << "   ";
+            }
+            
             textColor(15);
         }
         cout << '\n';

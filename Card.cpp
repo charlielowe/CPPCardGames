@@ -24,6 +24,12 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 		this->cardID = "**";
 	}
 
+	if (suit == "H" || suit == "D") {
+		this->colour = "red";
+	}
+	else {
+		this->colour = "black";
+	}
 	
 }
 
@@ -36,7 +42,6 @@ void Card::flip() {
 	else {
 		this->cardID = "**";
 	}
-	
 }
 
 string Card::getRank() {
@@ -57,4 +62,8 @@ string Card::getID() {
 
 void Card::setValue(int newValue) {
 	this->value = newValue;
+}
+
+string Card::getColour() {
+	return this->colour;
 }

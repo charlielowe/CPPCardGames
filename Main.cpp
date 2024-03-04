@@ -51,6 +51,19 @@ int main() {
             ShowConsoleCursor(false);
             deck.makeDeck();
             deck.shuffleDeck();
+
+            // Set pictures cards to have different values so can use them for comparrison when putting one card on top of another, since the card values have to be ascending 
+            for (Card& card : deck.getDeck()) {
+                if (card.getRank() == "J") {
+                    card.setValue(11);
+                }
+                else if (card.getRank() == "Q") {
+                    card.setValue(12);
+                }
+                else if (card.getRank() == "K") {
+                    card.setValue(13);
+                }
+            }
             solitaire.makeTable(deck);
             solitaire.solitaireMain(deck);
             while (1) {
