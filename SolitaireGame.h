@@ -12,13 +12,14 @@ using namespace std;
 #define KEY_RIGHT 77
 #define KEY_DOWN  80
 #define KEY_ENTER 13
+#define KEY_QUIT 8
 
 #pragma once
 class SolitaireGame
 {
 public:
 	SolitaireGame();
-
+	bool hasQuit = false;
 	void solitaireLoop(Deck& deck);
 	void solitaireMain(Deck& deck);
 	void useArrowKeys(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY);

@@ -16,6 +16,7 @@ public:
 	void shuffleDeck(); // Shuffles deck
 	vector<Card> getDeck(); // Returns deck vector
 	Card drawCard(); // Returns top card in deck and removes it from deck
+	void setDeck(vector<Card> deck);
 private:
 	vector<Card> cardsDeck; // Vector containing all cards
 };

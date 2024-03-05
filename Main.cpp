@@ -12,12 +12,12 @@ using namespace std;
 
 void ShowConsoleCursor(bool showFlag);
 
-Deck deck = Deck(); // Create new deck
 
 int main() {
     //PlaySound(TEXT("IceTheme.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     while (true) { // Game loop
-
+        Deck deck = Deck(); // Create new deck
+        system("cls");
         // Ask player which game they would like to play
         string strchoice; 
         bool choiceFound = false;
@@ -45,15 +45,18 @@ int main() {
             blackjack.blackJackMain(deck);
         }
         else { // Solitaire
-            deck.shuffleDeck();
             SolitaireGame solitaire = SolitaireGame();
             system("cls");
             ShowConsoleCursor(false);
             deck.makeDeck();
+         
             deck.shuffleDeck();
+            cout << "\n\n\n" << endl;
+            
+            vector<Card> cardDeck = deck.getDeck();
 
             // Set pictures cards to have different values so can use them for comparrison when putting one card on top of another, since the card values have to be ascending 
-            for (Card& card : deck.getDeck()) {
+            for (Card& card : cardDeck) {
                 if (card.getRank() == "J") {
                     card.setValue(11);
                 }
@@ -63,11 +66,16 @@ int main() {
                 else if (card.getRank() == "K") {
                     card.setValue(13);
                 }
+                else if (card.getRank() == "A") {
+                    card.setValue(1);
+                }
             }
-            solitaire.makeTable(deck);
+            deck.setDeck(cardDeck);
+         
             solitaire.solitaireMain(deck);
-            while (1) {
+            while (solitaire.hasQuit == false) {
                 solitaire.solitaireLoop(deck);
+
             }
         }
     }

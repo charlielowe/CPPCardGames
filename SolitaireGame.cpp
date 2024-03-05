@@ -1,10 +1,11 @@
 #include "SolitaireGame.h"
 #include "Card.h"
+#include <stack>
 
 using namespace std;
 
 const int rows = 7;
-const int cols = 17;
+const int cols = 19;
 
 int verticalPos = 0;
 int horizontalPos = 0;
@@ -19,17 +20,25 @@ Card emtpyS = Card(" ", "S", true);
 Card emtpyC = Card(" ", "C", true);
 Card emtpy = Card(" ", " ", false);
 Card emtpySpace = Card("S", "S", true);
+Card kingSpace = Card("K", "K", true);
 
-Card arr1[cols] = { emtpyH, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder};
-Card arr2[cols] = { emtpyD, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-Card arr3[cols] = { emtpyS, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-Card arr4[cols] = { emtpyC, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-Card arr5[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-Card arr6[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-Card arr7[cols] = { emtpy, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+// Stacks for ace piles
+
+stack<Card> acePileH;
+stack<Card> acePileD;
+stack<Card> acePileS;
+stack<Card> acePileC;
+
+Card arr1[cols] = { emtpyH, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder , placeholder };
+Card arr2[cols] = { emtpyD, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr3[cols] = { emtpyS, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr4[cols] = { emtpyC, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr5[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr6[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
+Card arr7[cols] = { emtpy, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
 vector<Card*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
 
-bool isFirstPass = true;
+bool isFirstPass;
 
 Card firstChoice = emtpy;
 Card secondChoice = emtpy;
@@ -37,7 +46,10 @@ Card secondChoice = emtpy;
 SolitaireGame::SolitaireGame(){
 }
 
+
 void SolitaireGame::solitaireMain(Deck& deck) {
+    isFirstPass = true;
+    makeTable(deck);
     if (firstChoice.getID() != "**") {
         cout << "First Choice: " << firstChoice.getID() << endl;
     }
@@ -51,14 +63,28 @@ void SolitaireGame::solitaireMain(Deck& deck) {
         cout << "Press enter to select your second card, then enter again to confirm it or any other key to cancel." << endl;
     }
 
+    // Sets ace pile's to have value of 0 so only aces can be put on them
+    arr1[0].setValue(0);
+    arr2[0].setValue(0);
+    arr3[0].setValue(0);
+    arr4[0].setValue(0);
+
+    // Add empty ace pile cards to ace pile stacks
+    emtpyH.setValue(0);
+    emtpyD.setValue(0);
+    emtpyS.setValue(0);
+    emtpyC.setValue(0);
+    acePileH.push(emtpyH);
+    acePileD.push(emtpyD);
+    acePileS.push(emtpyS);
+    acePileC.push(emtpyC);
   
 }
 
 void SolitaireGame::solitaireLoop(Deck& deck) {
     useArrowKeys(verticalPos, horizontalPos, firstChoice, secondChoice, firstX, firstY);
-    system("cls");
     makeTable(deck);
-    
+    cout << "firstChoice: " << firstChoice.getID() << "secondChoice: " << secondChoice.getID() << endl;
     if (firstChoice.getID() != "**") {
         cout << "First Choice: " << firstChoice.getID() << endl;
     }
@@ -75,50 +101,142 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
     c = _getch();
 
 
+
     if (c && c != 224)
     {
         if (c == KEY_ENTER) { // User presses enter the first time to choose a card
-            if (array2D[horizontalPos][verticalPos].getID() != "**") { // If card isn't flipped
+            if (array2D[horizontalPos][verticalPos].getID() != "**") { // If card isn't flipped or one of the empty ace piles
                 cout << array2D[horizontalPos][verticalPos].getID() << endl; // Print out card just selected
                 int y = _getch();
                 if (y == KEY_ENTER) { // Player presses enter again to confrim the card
-                    if ((firstChoice).getID() == "**") { // firstChoice is set to card "emtpy" by default which has an ID of ** so checking to make sure the first choice hasn't already been selected
+
+                    // firstChoice is set to card "emtpy" by default which has an ID of ** so checking to make sure the first choice hasn't already been selected, also making sure firstChoice isn't one of the ace stacks
+                    if ((firstChoice).getID() == "**" && array2D[horizontalPos][verticalPos].getID() != " H" && array2D[horizontalPos][verticalPos].getID() != " D" && array2D[horizontalPos][verticalPos].getID() != " S" && array2D[horizontalPos][verticalPos].getID() != " C") { 
                         firstChoice = array2D[horizontalPos][verticalPos]; // Sets firstChoice to card currently selected
                         firstX = horizontalPos; 
                         firstY = verticalPos;
                     }
+
+                    // if this is the players first choice and it is one of the ace stacks, tell player that isn't allowed
+                    else if((firstChoice).getID() == "**" && (array2D[horizontalPos][verticalPos].getID() == " H" || array2D[horizontalPos][verticalPos].getID() == " D" || array2D[horizontalPos][verticalPos].getID() == " S" || array2D[horizontalPos][verticalPos].getID() == " C")) {
+                        cout << "You can't select one of the ace stacks as your first choice! Press a key to continue..." << endl;
+                        _getch();
+                    }
                     else { // If first choice has already been set
                         secondChoice = array2D[horizontalPos][verticalPos]; // Second choice is set to the selected card
-                        if (firstChoice.getColour() == secondChoice.getColour()) {
-                            cout << "Cards must be alternating in colour. Press a key to continue." << endl;
-                            firstChoice = emtpy;
-                            secondChoice = emtpy;
-                            _getch();
-                        }
-                        else if ((firstChoice.getValue() + 1) != secondChoice.getValue()) {
-                            cout << "Cards must be ascending in value. Press a key to continue." << endl;
-                            firstChoice = emtpy;
-                            secondChoice = emtpy;
-                            _getch();
+
+
+                        // If player selects one of the ace piles as their second choice, make sure move is valid ----------------------------------------------
+                        if ((verticalPos == 0) && (horizontalPos == 0 || horizontalPos == 1 || horizontalPos == 2 || horizontalPos == 3)) {
+                            if (firstChoice.getSuit() == secondChoice.getSuit()) {
+                                if ((firstChoice.getValue() - 1) == secondChoice.getValue()) {
+                                    switch (horizontalPos) {
+                                    case 0:
+                                        acePileH.push(firstChoice);
+                                        break;
+                                    case 1:
+                                        acePileD.push(firstChoice);
+                                        break;
+                                    case 2:
+                                        acePileS.push(firstChoice);
+                                        break;
+                                    case 3:
+                                        acePileC.push(firstChoice);
+                                        break;
+                                    }
+                            
+                                    array2D[horizontalPos][verticalPos] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
+                                    array2D[firstX][firstY] = placeholder; // Sets where the first card originally was to a blank card since it's been moved
+                                    if (array2D[firstX][firstY - 1].getID() == "**") { // If card below where original card was flipped, unflip it since there now isn't a card ontop of it
+                                        array2D[firstX][firstY - 1].flip();
+                                    }
+                                    firstChoice = emtpy;
+                                    secondChoice = emtpy;
+                                }
+                                else {
+                                    cout << "Cards have to be added to ace stacks in ascending value!" << endl;
+                                    cout << "Press a key to continue..." << endl;
+                                    firstChoice = emtpy;
+                                    secondChoice = emtpy;
+                                    _getch();
+                                }
+                            }
+                            else {
+                                cout << "Cards added to the ace stack need to have the same suit as the stack!" << endl;
+                                cout << "Press a key to continue..." << endl;
+                                firstChoice = emtpy;
+                                secondChoice = emtpy;
+                                _getch();
+                            }
                         }
                         else {
-                            array2D[horizontalPos][verticalPos + 1] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
-                            array2D[firstX][firstY] = placeholder; // Sets where the first card originally was to a blank card since it's been moved
-                            if (array2D[firstX][firstY - 1].getID() == "**") { // If card below where original card was flipped, unflip it since there now isn't a card ontop of it
-                                array2D[firstX][firstY - 1].flip();
+                            // If the cards are the same colour, don't move second card
+                            if (firstChoice.getColour() == secondChoice.getColour()) {
+                                cout << "Cards must be alternating in colour. Press a key to continue." << endl;
+                                firstChoice = emtpy;
+                                secondChoice = emtpy;
+                                _getch();
                             }
-                            firstChoice = emtpy;
-                            secondChoice = emtpy;
+
+                            // If second choice doesn't have a value of 1 higher than first choice then don't move second card
+                            else if ((firstChoice.getValue() + 1) != secondChoice.getValue()) {
+                                cout << "Cards must be ascending in value. Press a key to continue." << endl;
+                                firstChoice = emtpy;
+                                secondChoice = emtpy;
+                                _getch();
+                            }
+                            else {
+                                array2D[horizontalPos][verticalPos + 1] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
+                                
+                                // If a card has just been moved off an ace stack, show the card below it in the stack
+                                if ((firstY == 0) && (firstX == 0 || firstX == 1 || firstX == 2 || firstX == 3)) {
+                                    switch (firstX) {
+                                    case 0:
+                                        acePileH.pop();
+                                        array2D[firstX][firstY] = acePileH.top();
+                                        break;
+                                    case 1:
+                                        acePileD.pop();
+                                        array2D[firstX][firstY] = acePileD.top();
+                                        break;
+                                    case 2:
+                                        acePileS.pop();
+                                        array2D[firstX][firstY] = acePileS.top();
+                                        break;
+                                    case 3:
+                                        acePileC.pop();
+                                        array2D[firstX][firstY] = acePileC.top();
+                                        break;
+                                    }
+                                }
+                                else {
+                                    array2D[firstX][firstY] = placeholder; // Sets where the first card originally was to a blank card since it's been moved
+                                }
+                                
+                                if (firstY != 0) { // If card below where original card was flipped, unflip it since there now isn't a card ontop of it
+                                    if (array2D[firstX][firstY - 1].getID() == "**") {
+                                        array2D[firstX][firstY - 1].flip();
+                                    }
+                                }
+                                firstChoice = emtpy;
+                                secondChoice = emtpy;
+                            }
                         }
-                        
+
                     }
                     
                 }
             }
             else {
-                cout << "You cannot select a card that isn't flipped! Press a key to continue." << endl;
+                cout << "You cannot select that card! Press a key to continue." << endl;
+                firstChoice = emtpy;
+                secondChoice = emtpy;
                 _getch();
             }
+            
+        }
+        else if (c == KEY_QUIT) {
+            this->hasQuit = true;
             
         }
       
@@ -191,6 +309,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
 
             }
             break;
+            
         default:
             
             break;
@@ -200,9 +319,11 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
 
 void SolitaireGame::makeTable(Deck& deck){
 
-    Card tempCard = deck.drawCard();
-    tempCard.flip();
+    
     if (isFirstPass) {
+        
+        Card tempCard = deck.drawCard();
+        tempCard.flip();
         arr1[2] = tempCard;
         tempCard = deck.drawCard();
         tempCard.flip();
@@ -333,6 +454,8 @@ void SolitaireGame::makeTable(Deck& deck){
     //currentArea = verticalPos;
 
     // Print cards horizontally
+
+    system("cls");
     printTable(table);
 }
 
@@ -347,6 +470,7 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
             suit10 = table[x][i].substr(4, 1);
             if (isO == "O" || isO10 == "O") {
                 textColor(10);
+                replace(table[x][i].begin(), table[x][i].end(), 'O', ' ');
             }
             else{
                 textColor(15);
