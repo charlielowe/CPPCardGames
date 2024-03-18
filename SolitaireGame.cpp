@@ -431,10 +431,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
 }
 
 void SolitaireGame::makeTable(Deck& deck){
-
-    
     if (isFirstPass) {
-        
         Card tempCard = deck.drawCard();
         tempCard.flip();
         arr1[2] = tempCard;
