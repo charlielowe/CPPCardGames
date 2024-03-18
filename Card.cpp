@@ -27,8 +27,11 @@ Card::Card(string newRank, string newSuit, bool flipped) {
 	if (suit == "H" || suit == "D") {
 		this->colour = "red";
 	}
-	else {
+	else if(suit == "S" || suit == "C") {
 		this->colour = "black";
+	}
+	else {
+		this->colour = "white";
 	}
 	
 }
