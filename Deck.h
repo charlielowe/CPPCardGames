@@ -17,6 +17,7 @@ public:
 	vector<Card> getDeck(); // Returns deck vector
 	Card drawCard(); // Returns top card in deck and removes it from deck
 	void setDeck(vector<Card> deck);
+	void addCard(Card card);
 private:
 	vector<Card> cardsDeck; // Vector containing all cards
 };

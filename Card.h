@@ -15,7 +15,7 @@ public:
 	string getID();
 	string getColour();
 	void setValue(int newValue);
-
+	bool getFlipped();
 	void flip(); // Flips the card
 	
 

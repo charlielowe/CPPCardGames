@@ -86,3 +86,7 @@ Card Deck::drawCard() {
 void Deck::setDeck(vector<Card> deck) {
 	this->cardsDeck = deck;
 }
+
+void Deck::addCard(Card card) {
+	this->cardsDeck.push_back(card);
+}

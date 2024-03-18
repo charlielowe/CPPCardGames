@@ -67,3 +67,7 @@ void Card::setValue(int newValue) {
 string Card::getColour() {
 	return this->colour;
 }
+
+bool Card::getFlipped() {
+	return this->flipped;
+}

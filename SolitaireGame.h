@@ -22,10 +22,11 @@ public:
 	bool hasQuit = false;
 	void solitaireLoop(Deck& deck);
 	void solitaireMain(Deck& deck);
-	void useArrowKeys(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY);
+	void useArrowKeys(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY, Deck& deck);
 	void makeTable(Deck& deck);
 	void printTable(vector<vector<string>> table);
 	void textColor(int color);
+	void setCursorPosition(int x, int y);
 
 private:
 
