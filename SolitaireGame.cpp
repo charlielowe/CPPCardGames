@@ -100,7 +100,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
     {
         if (c == KEY_ENTER) { // User presses enter the first time to choose a card
 
-            if (horizontalPos == 6 && verticalPos == 0) {
+            if (horizontalPos == 6 && verticalPos == 0) { // If user clicks on card pile
                 if (deckEmtpy == true) {
 
                     while (deckPile.size() != 1) {
@@ -109,7 +109,10 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                     }
                     array2D[5][0] = deckPile.top();
                     array2D[6][0].flip();
-                    deckEmtpy = false;
+                    if (deck.getDeck().size() > 0) {
+                        deckEmtpy = false;
+                    }
+                   
                 }
                 else {
                     Card tempCard = deck.drawCard();
@@ -204,7 +207,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                                         }
                                         else {
                                             if (firstY == 2) {
-                                                array2D[firstX][firstY] = kingSpace; // Sets where the first card originally was to a blank card since it's been moved
+                                                array2D[firstX][firstY] = kingSpace; // Sets where the first card originally was to a king space since it's been moved
 
                                             }
                                             else {
@@ -267,7 +270,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                                 else {
                                     if (secondChoice.getID() == "KK") {
                                         array2D[horizontalPos][verticalPos] = firstChoice; // Sets the empty king space to be the first choice
-                                        verticalPos -= 1;
+                                        secondY -= 1;
                                     }
                                     else {
                                         array2D[horizontalPos][verticalPos + 1] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
@@ -276,10 +279,9 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
 
 
                                     int i = 1;
-                                    // Sets the card below current card to be the first choice, aka move first card below second card
-
+                                    
                                     while (array2D[firstX][firstY + i].getID() != "  ") {
-                                        array2D[horizontalPos][verticalPos + 1 + i] = array2D[firstX][firstY + i];
+                                        array2D[secondX][secondY + 1 + i] = array2D[firstX][firstY + i];
                                         array2D[firstX][firstY + i] = placeholder; // Sets where the first card originally was to a blank card since it's been moved
                                         i++;
                                     }
@@ -411,6 +413,32 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
         case KEY_RIGHT: /* P */
             if (horizontalPos < 6) {
                 horizontalPos = horizontalPos + 1;
+                int tempCount = horizontalPos;
+                if (horizontalPos == 6) {
+                    if (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") {
+                        horizontalPos = horizontalPos - 1;
+                    }
+                }
+                else {
+                    while (array2D[tempCount][verticalPos].getID() == "  " || array2D[tempCount][verticalPos].getID() == "SS") {
+                        if (tempCount + 1 == 6) {
+                            if (array2D[tempCount + 1][verticalPos].getID() == "  " || array2D[tempCount + 1][verticalPos].getID() == "SS") {
+                                tempCount = horizontalPos - 1;
+                                break;
+                            }
+                            else {
+                                tempCount = 6;
+                            }
+                        }
+                        else {
+                            tempCount = tempCount + 1;
+                        }
+
+                        
+                    }
+                    horizontalPos = tempCount;
+                }
+                
                 if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos + 1][verticalPos].getID() == "  ") {
                     horizontalPos = horizontalPos - 1;
                 }
