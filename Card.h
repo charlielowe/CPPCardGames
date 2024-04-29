@@ -20,11 +20,11 @@ public:
 	
 
 private:
-	bool flipped;
-	string rank;
-	string suit;
-	int value;
-	string cardID;
-	string colour;
+	bool mFlipped;
+	string mRank;
+	string mSuit;
+	int mValue;
+	string mCardID;
+	string mColour;
 };
 

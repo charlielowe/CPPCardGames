@@ -4,9 +4,11 @@
 
 using namespace std;
 
+// Number of rows and columns on the game board
 const int rows = 7;
 const int cols = 19;
 
+// Initializing variables
 int verticalPos;
 int horizontalPos;
 int firstX;
@@ -14,7 +16,7 @@ int firstY;
 int secondX;
 int secondY;
 
-
+// Creating place holder and emtpy cards
 Card placeholder = Card(" ", " ", true);
 Card emtpyH = Card(" ", "H", true);
 Card emtpyD = Card(" ", "D", true);
@@ -25,13 +27,13 @@ Card emtpySpace = Card("S", "S", true);
 Card kingSpace = Card("K", "K", true);
 
 // Stacks for ace piles
-
 stack<Card> acePileH;
 stack<Card> acePileD;
 stack<Card> acePileS;
 stack<Card> acePileC;
 stack<Card> deckPile;
 
+// Creates 2D array for the game board. Fills all spaces with appropriate cards or placeholders if the cards will later be overwritten with cards from the deck
 Card arr1[cols] = { emtpyH, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder , placeholder };
 Card arr2[cols] = { emtpyD, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
 Card arr3[cols] = { emtpyS, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
@@ -39,7 +41,7 @@ Card arr4[cols] = { emtpyC, placeholder, placeholder, placeholder, placeholder, 
 Card arr5[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
 Card arr6[cols] = { emtpySpace, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
 Card arr7[cols] = { emtpy, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder, placeholder };
-vector<Card*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
+vector<Card*> array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 }; // 2D array for game board
 
 bool isFirstPass;
 bool deckEmtpy = false;
@@ -47,6 +49,7 @@ bool deckEmtpy = false;
 Card firstChoice = emtpy;
 Card secondChoice = emtpy;
 
+// Constructor, sets initial values
 SolitaireGame::SolitaireGame(){
     kingSpace.setValue(14);
     verticalPos = 0;
@@ -60,7 +63,7 @@ SolitaireGame::SolitaireGame(){
     deckPile.push(emtpySpace);
 }
 
-
+// Runs once at the start of the game, resets values and deck
 void SolitaireGame::solitaireMain(Deck& deck) {
     isFirstPass = true;
     makeTable(deck);
@@ -84,23 +87,28 @@ void SolitaireGame::solitaireMain(Deck& deck) {
   
 }
 
+
+// Main loop
 void SolitaireGame::solitaireLoop(Deck& deck) {
-    useArrowKeys(verticalPos, horizontalPos, firstChoice, secondChoice, firstX, firstY, deck);
+    handleUserInput(verticalPos, horizontalPos, firstChoice, secondChoice, firstX, firstY, deck);
     makeTable(deck);
 
 }
 
-void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY, Deck& deck) {
+// Function to handle user input
+void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& firstChoice, Card& secondChoice, int& firstX, int& firstY, Deck& deck) {
     int c, ex;
-    c = _getch();
+    c = _getch(); // Take user input
 
 
 
-    if (c && c != 224)
+    if (c && c != 224) // Arrow keys return 2 seperate values when using getch. The first one is 224 so checking if the key pressed was an arrow key
     {
-        if (c == KEY_ENTER) { // User presses enter the first time to choose a card
+        if (c == KEY_ENTER) { // User presses enter the first time to select a card
 
-            if (horizontalPos == 6 && verticalPos == 0) { // If user clicks on card pile
+            if (horizontalPos == 6 && verticalPos == 0) { // If user select the deck in the top right corner of table
+
+                // If the deck is empty, take all cards from the pile of flipped cards next to the deck and put them back in the deck flipped
                 if (deckEmtpy == true) {
 
                     while (deckPile.size() != 1) {
@@ -114,6 +122,8 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                     }
                    
                 }
+
+                // If the deck isn't emtpy, draw a card and put it on the pile next to the deck
                 else {
                     Card tempCard = deck.drawCard();
                     if (tempCard.getFlipped() != true) {
@@ -124,13 +134,12 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                     array2D[5][0] = deckPile.top();
                     if (deck.getDeck().size() == 0) {
                         array2D[6][0] = kingSpace;
-                        //array2D[6][0].flip();
                         deckEmtpy = true;
                     }
                 }
 
             }
-            else if (array2D[horizontalPos][verticalPos].getID() != "**") { // If card isn't flipped or one of the empty ace piles
+            else if (array2D[horizontalPos][verticalPos].getID() != "**") { // If card chosen isn't the deck and the card isn't flipped or one of the empty ace piles
 
                 int y = _getch();
                 if (y == KEY_ENTER) { // Player presses enter again to confrim the card
@@ -142,38 +151,32 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                         firstY = verticalPos;
                     }
 
-                    // if this is the players first choice and it is one of the ace stacks, tell player that isn't allowed
+                    // if this is the player's first choice and it is one of the ace stacks, tell player that isn't allowed
                     else if ((firstChoice).getID() == "**" && (array2D[horizontalPos][verticalPos].getID() == " H" || array2D[horizontalPos][verticalPos].getID() == " D" || array2D[horizontalPos][verticalPos].getID() == " S" || array2D[horizontalPos][verticalPos].getID() == " C")) {
                         cout << "You can't select one of the ace stacks as your first choice! Press a key to continue..." << endl;
                         _getch();
                         system("cls");
                     }
                     else { // If first choice has already been set
-                        if (horizontalPos == 5 && verticalPos == 0) {
+                        if (horizontalPos == 5 && verticalPos == 0) { // If the player tries to choose the deck pile as their second choice tell them it isn't allowed
                             cout << "You can't put a card on the deck pile! Press a key to continue..." << endl;
-                            firstChoice = emtpy;
-                            secondChoice = emtpy;
-                            _getch();
-                            system("cls");
+                            resetChoices();
                         }
                         else {
                             secondChoice = array2D[horizontalPos][verticalPos]; // Second choice is set to the selected card
                             secondX = horizontalPos;
                             secondY = verticalPos;
 
-                            // If player selects one of the ace piles as their second choice, make sure move is valid ----------------------------------------------
+                            // If player selects one of the ace piles as their second choice, make sure move is valid
                             if ((verticalPos == 0) && (horizontalPos == 0 || horizontalPos == 1 || horizontalPos == 2 || horizontalPos == 3)) {
-                                if (array2D[firstX][firstY + 1].getID() != "  ") { // If the card they chose has any cards on top of it
+                                if (array2D[firstX][firstY + 1].getID() != "  ") { // If the card they chose has any cards on top of it tell them that isn't allowed
                                     cout << "You can't add a card to the ace stack if it has any cards on top of it!" << endl;
                                     cout << "Press a key to continue..." << endl;
-                                    firstChoice = emtpy;
-                                    secondChoice = emtpy;
-                                    _getch();
-                                    system("cls");
+                                    resetChoices();
                                 }
-                                else {
-                                    if (firstChoice.getSuit() == secondChoice.getSuit()) {
-                                        if ((firstChoice.getValue() - 1) == secondChoice.getValue()) {
+                                else { // If the card they chose doesn't have any cards on top of it
+                                    if (firstChoice.getSuit() == secondChoice.getSuit()) { // If the selected card is the same suit as the ace pile
+                                        if ((firstChoice.getValue() - 1) == secondChoice.getValue()) { // If the selected card's value is 1 higher than the top card on the ace pile, check which pile was selected and move card to it
                                             switch (horizontalPos) {
                                             case 0:
                                                 acePileH.push(firstChoice);
@@ -189,7 +192,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                                                 break;
                                             }
 
-                                            if ((acePileH.size() == 14) && (acePileD.size() == 14) && (acePileS.size() == 14) && (acePileC.size() == 14)){ // If all cards are on the ace piles
+                                            if ((acePileH.size() == 14) && (acePileD.size() == 14) && (acePileS.size() == 14) && (acePileC.size() == 14)){ // If all cards are on the ace piles win the game
                                                 system("cls");
                                                 cout << "You have won the game!! Press a key to continue!" << endl;
                                                 _getch();
@@ -198,16 +201,16 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
 
 
 
-                                        array2D[horizontalPos][verticalPos] = firstChoice; // Sets the card below current card to be the first choice, aka move first card below second card
-                                        if (firstX == 5 && firstY == 0) {
+                                        array2D[horizontalPos][verticalPos] = firstChoice; // Updates the game board to show the card you just moved on top of the ace pile you selected
+                                        if (firstX == 5 && firstY == 0) { // If the first choice was the deck pile, take the top card from the deck and put it on the ace stack
                                             deckPile.pop();
                                             array2D[firstX][firstY] = deckPile.top();
                                             
 
                                         }
-                                        else {
-                                            if (firstY == 2) {
-                                                array2D[firstX][firstY] = kingSpace; // Sets where the first card originally was to a king space since it's been moved
+                                        else { // If the first selected card wasn't the deck pile
+                                            if (firstY == 2) { // Check if the card moved was the last in the column
+                                                array2D[firstX][firstY] = kingSpace; // Sets where the first card originally was to a king space since it's been moved (king spaces are blank spaces that kings can be placed on)
 
                                             }
                                             else {
@@ -223,23 +226,17 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                                         }
                                         firstChoice = emtpy;
                                         secondChoice = emtpy;
-                                    }
+                                    } // If the card that you tried to put on the ace pile doesn't have a value of 1 higher than what was already at the top of the pile, tell the user the move is invalid
                                     else {
                                         cout << "Cards have to be added to ace stacks in ascending value!" << endl;
                                         cout << "Press a key to continue..." << endl;
-                                        firstChoice = emtpy;
-                                        secondChoice = emtpy;
-                                        _getch();
-                                        system("cls");
+                                        resetChoices();
                                     }
                                 }
-                                else {
+                                else { // If the cards had the same suit, tell the user the move was invalid
                                     cout << "Cards added to the ace stack need to have the same suit as the stack!" << endl;
                                     cout << "Press a key to continue..." << endl;
-                                    firstChoice = emtpy;
-                                    secondChoice = emtpy;
-                                    _getch();
-                                    system("cls");
+                                    resetChoices();
                                 }
                             }
                             }
@@ -247,25 +244,16 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
                                 // If the cards are the same colour, don't move second card
                                 if (firstChoice.getColour() == secondChoice.getColour()) {
                                     cout << "Cards must be alternating in colour. Press a key to continue." << endl;
-                                    firstChoice = emtpy;
-                                    secondChoice = emtpy;
-                                    _getch();
-                                    system("cls");
+                                    resetChoices();
                                 }
                                 // If second choice doesn't have a value of 1 higher than first choice then don't move second card
                                 else if ((firstChoice.getValue() + 1) != secondChoice.getValue()) {
                                     cout << "Cards must be ascending in value. Press a key to continue." << endl;
-                                    firstChoice = emtpy;
-                                    secondChoice = emtpy;
-                                    _getch();
-                                    system("cls");
+                                    resetChoices();
                                 }
                                 else if ((array2D[secondX][secondY + 1]).getID() != "  ") {
                                     cout << "This card already has a card on top of it! Press a key to continue." << endl;
-                                    firstChoice = emtpy;
-                                    secondChoice = emtpy;
-                                    _getch();
-                                    system("cls");
+                                    resetChoices();
                                 }
                                 else {
                                     if (secondChoice.getID() == "KK") {
@@ -343,10 +331,7 @@ void SolitaireGame::useArrowKeys(int& verticalPos, int& horizontalPos, Card& fir
             }
             else {
                 cout << "You cannot select that card! Press a key to continue." << endl;
-                firstChoice = emtpy;
-                secondChoice = emtpy;
-                _getch();
-                system("cls");
+                resetChoices();
             }
             
         }
@@ -598,7 +583,7 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
     cout << "firstChoice: " << firstChoice.getID() << " | secondChoice: " << secondChoice.getID() << endl;
    
     string isO, isO10, suit, suit10;
-    for (int i = 0; i < 38; i++) { // Loops for the ammount of strings inside cards[0] (which is card1) 
+    for (int i = 0; i < 38; i++) { // Loops for the amount of strings inside cards[0] (which is card1) 
         for (int x = 0; x < rows; x++) { // For every col in table array
             // Adjust spacing between cards as needed
             isO = table[x][i].substr(4, 1);
@@ -606,40 +591,39 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
             suit = table[x][i].substr(3, 1);
             suit10 = table[x][i].substr(4, 1);
             if (isO == "O" || isO10 == "O") {
-                textColor(10);
+                setTextColour(10);
                 replace(table[x][i].begin(), table[x][i].end(), 'O', ' ');
             }
             else{
-                textColor(15);
+                setTextColour(15);
             }
             if ((suit == "H" || suit == "D" || suit10 == "H" || suit10 == "D") && isO != "O" && isO10 != "O") {
-                textColor(15);
+                setTextColour(15);
                 cout << table[x][i].substr(0, 2);
-                textColor(12);
+                setTextColour(12);
                 cout << table[x][i].substr(2, 3);
-                textColor(15);
+                setTextColour(15);
                 cout << table[x][i].substr(5, 7) << "   ";
-
             }
             else if((suit == "S" || suit == "C" || suit10 == "S" || suit10 == "C") && isO != "O" && isO10 != "O") {
-                textColor(15);
+                setTextColour(15);
                 cout << table[x][i].substr(0, 2);
-                textColor(9);
+                setTextColour(9);
                 cout << table[x][i].substr(2, 3);
-                textColor(15);
+                setTextColour(15);
                 cout << table[x][i].substr(5, 7) << "   ";
             }
             else {
                 cout << table[x][i] << "   ";
             }
             
-            textColor(15);
+            setTextColour(15);
         }
         cout << '\n';
     }
 }
 
-void SolitaireGame::textColor(int color) {
+void SolitaireGame::setTextColour(int color) {
     static int __BACKGROUND;
 
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -658,4 +642,11 @@ void SolitaireGame::setCursorPosition(int x, int y)
     std::cout.flush();
     COORD coord = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(hOut, coord);
+}
+
+void SolitaireGame::resetChoices() {
+    firstChoice = emtpy;
+    secondChoice = emtpy;
+    _getch();
+    system("cls");
 }

@@ -82,14 +82,14 @@ void BlackJackGame::blackJackMain(Deck& deck) {
             calculateTotal(playerTotal, playerHand); // Calculate total of first hand
         }
 
-        // If the player has split their hand, and the second deck hasn't gone over 21
+        // If the player has split their hand, and the second deck hasn't gone over 21, calculate total of the second hand
         if (hasSplit && secondHandAlive) {
             calculateTotal(playerTotal2, playerHand2);
         }
 
-        calculateTotal(dealerTotal, dealerHand);
+        calculateTotal(dealerTotal, dealerHand); // Calculate dealer's total
 
-        // If player has gone over 21
+        // If player has gone over 21 and the first hand is still alive
         if (playerTotal > 21 && firstHandAlive) {
 
             // If deck has been split, say first hand is bust
@@ -251,7 +251,7 @@ void BlackJackGame::blackJackMain(Deck& deck) {
                     }
                 }
 
-                // Player chooses hold
+                // Player chose hold
                 else if (stoi(choice2) == 2) {
                     system("cls");
                     cout << "You hold your second hand at a total of " << playerTotal2 << endl;

@@ -14,7 +14,6 @@ void ShowConsoleCursor(bool showFlag);
 
 
 int main() {
-    //PlaySound(TEXT("IceTheme.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     while (true) { // Game loop
         Deck deck = Deck(); // Create new deck
         system("cls");
@@ -22,7 +21,7 @@ int main() {
         string strchoice; 
         bool choiceFound = false;
         cout << "Would you like to play (1)Blackjack or (2)Solitare?" << endl;
-        while (choiceFound == false) {
+        while (choiceFound == false) { // Loop to handle if user enters something other than the options provided
             cin.clear();
             cin.sync();
             cout << "Enter 1 or 2: ";
@@ -73,7 +72,7 @@ int main() {
             deck.setDeck(cardDeck);
          
             solitaire.solitaireMain(deck);
-            while (solitaire.hasQuit == false) {
+            while (solitaire.hasQuit == false) { // Loop to run the game until the user quits
                 solitaire.solitaireLoop(deck);
 
             }

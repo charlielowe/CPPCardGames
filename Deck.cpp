@@ -12,50 +12,50 @@ void Deck::makeDeck() {
 			Card d("A", "D", false);
 			Card s("A", "S", false);
 			Card c("A", "C", false);
-			this->cardsDeck.push_back(h);
-			this->cardsDeck.push_back(d);
-			this->cardsDeck.push_back(s);
-			this->cardsDeck.push_back(c);
+			this->mCardsDeck.push_back(h);
+			this->mCardsDeck.push_back(d);
+			this->mCardsDeck.push_back(s);
+			this->mCardsDeck.push_back(c);
 		}
 		else if (i == 11) {
 			Card h("J", "H", false);
 			Card d("J", "D", false);
 			Card s("J", "S", false);
 			Card c("J", "C", false);
-			this->cardsDeck.push_back(h);
-			this->cardsDeck.push_back(d);
-			this->cardsDeck.push_back(s);
-			this->cardsDeck.push_back(c);
+			this->mCardsDeck.push_back(h);
+			this->mCardsDeck.push_back(d);
+			this->mCardsDeck.push_back(s);
+			this->mCardsDeck.push_back(c);
 		}
 		else if (i == 12) {
 			Card h("Q", "H", false);
 			Card d("Q", "D", false);
 			Card s("Q", "S", false);
 			Card c("Q", "C", false);
-			this->cardsDeck.push_back(h);
-			this->cardsDeck.push_back(d);
-			this->cardsDeck.push_back(s);
-			this->cardsDeck.push_back(c);
+			this->mCardsDeck.push_back(h);
+			this->mCardsDeck.push_back(d);
+			this->mCardsDeck.push_back(s);
+			this->mCardsDeck.push_back(c);
 		}
 		else if (i == 13) {
 			Card h("K", "H", false);
 			Card d("K", "D", false);
 			Card s("K", "S", false);
 			Card c("K", "C", false);
-			this->cardsDeck.push_back(h);
-			this->cardsDeck.push_back(d);
-			this->cardsDeck.push_back(s);
-			this->cardsDeck.push_back(c);
+			this->mCardsDeck.push_back(h);
+			this->mCardsDeck.push_back(d);
+			this->mCardsDeck.push_back(s);
+			this->mCardsDeck.push_back(c);
 		}
 		else {
 			Card h(to_string(i), "H", false);
 			Card d(to_string(i), "D", false);
 			Card s(to_string(i), "S", false);
 			Card c(to_string(i), "C", false);
-			this->cardsDeck.push_back(h);
-			this->cardsDeck.push_back(d);
-			this->cardsDeck.push_back(s);
-			this->cardsDeck.push_back(c);
+			this->mCardsDeck.push_back(h);
+			this->mCardsDeck.push_back(d);
+			this->mCardsDeck.push_back(s);
+			this->mCardsDeck.push_back(c);
 		}
 
 		
@@ -68,25 +68,27 @@ void Deck::shuffleDeck() {
 	random_device rd;
 	mt19937 g(rd());
 
-	std::shuffle(this->cardsDeck.begin(), this->cardsDeck.end(), g);
+	std::shuffle(this->mCardsDeck.begin(), this->mCardsDeck.end(), g);
 }
 
 // Returns deck
 vector<Card> Deck::getDeck() {
-	return(this->cardsDeck);
+	return(this->mCardsDeck);
 }
 
 // Returns card from top of deck and removes it from deck vector
 Card Deck::drawCard() {
-	Card drawnCard = this->cardsDeck.back();
-	this->cardsDeck.pop_back();
+	Card drawnCard = this->mCardsDeck.back();
+	this->mCardsDeck.pop_back();
 	return drawnCard;
 }
 
+// Replaces the deck with new deck passed into function
 void Deck::setDeck(vector<Card> deck) {
-	this->cardsDeck = deck;
+	this->mCardsDeck = deck;
 }
 
+// Adds a card to the deck
 void Deck::addCard(Card card) {
-	this->cardsDeck.push_back(card);
+	this->mCardsDeck.push_back(card);
 }

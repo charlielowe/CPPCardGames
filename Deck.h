@@ -19,6 +19,6 @@ public:
 	void setDeck(vector<Card> deck);
 	void addCard(Card card);
 private:
-	vector<Card> cardsDeck; // Vector containing all cards
+	vector<Card> mCardsDeck; // Vector containing all cards
 };
 

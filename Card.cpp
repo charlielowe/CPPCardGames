@@ -1,76 +1,79 @@
 #include "Card.h"
 
-Card::Card(string newRank, string newSuit, bool flipped) {
-	this->rank = newRank;
-	this->suit = newSuit;
-	this->flipped = flipped;
+Card::Card(string newRank, string newSuit, bool mFlipped) {
+	this->mRank = newRank;
+	this->mSuit = newSuit;
+	this->mFlipped = mFlipped;
 	
 	// Sets the value of the picture cards
-	if (rank == "K" || rank == "Q" || rank == "J" || rank == " " || rank == "E" || rank == "S") {
-		this->value = 10;
+	if (mRank == "K" || mRank == "Q" || mRank == "J" || mRank == " " || mRank == "E" || mRank == "S") {
+		this->mValue = 10;
 	}
-	else if (rank == "A") {
-		this->value = 11;
+	else if (mRank == "A") {
+		this->mValue = 11;
 	}
 	else {
-		this->value = stoi(rank);
+		this->mValue = stoi(mRank);
 	}
 
 	// Sets the card ID depending on if card is flipped
-	if (flipped == true) {
-		this->cardID = this->rank + this->suit;
+	if (mFlipped == true) {
+		this->mCardID = this->mRank + this->mSuit;
 	}
 	else {
-		this->cardID = "**";
+		this->mCardID = "**";
 	}
 
-	if (suit == "H" || suit == "D") {
-		this->colour = "red";
+	if (mSuit == "H" || mSuit == "D") {
+		this->mColour = "red";
 	}
-	else if(suit == "S" || suit == "C") {
-		this->colour = "black";
+	else if(mSuit == "S" || mSuit == "C") {
+		this->mColour = "black";
 	}
 	else {
-		this->colour = "white";
+		this->mColour = "white";
 	}
 	
 }
 
-// Swaps flipped bool to opposite of what it current is, updates card ID
+// Swaps mFlipped bool to opposite of what it currently is, updates card ID
 void Card::flip() {
-	this->flipped = !(this->flipped);
-	if (this->flipped) {
-		this->cardID = this->rank + this->suit;
+	this->mFlipped = !(this->mFlipped);
+	if (this->mFlipped) {
+		this->mCardID = this->mRank + this->mSuit;
 	}
 	else {
-		this->cardID = "**";
+		this->mCardID = "**";
 	}
 }
 
+
+// Getters and setters
+
 string Card::getRank() {
-	return this->rank;
+	return this->mRank;
 }
 
 string Card::getSuit() {
-	return this->suit;
+	return this->mSuit;
 }
 
 int Card::getValue() {
-	return this->value;
+	return this->mValue;
 }
 
 string Card::getID() {
-	return this->cardID;
+	return this->mCardID;
 }
 
 void Card::setValue(int newValue) {
-	this->value = newValue;
+	this->mValue = newValue;
 }
 
 string Card::getColour() {
-	return this->colour;
+	return this->mColour;
 }
 
 bool Card::getFlipped() {
-	return this->flipped;
+	return this->mFlipped;
 }
