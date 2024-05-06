@@ -144,7 +144,7 @@ void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& 
                 int y = _getch();
                 if (y == KEY_ENTER) { // Player presses enter again to confrim the card
 
-                    // firstChoice is set to card "emtpy" by default which has an ID of ** so checking to make sure the first choice hasn't already been selected, also making sure firstChoice isn't one of the ace stacks
+                    // firstChoice is set to card "emtpy" by default which has an ID of **, so checking to make sure the first choice hasn't already been selected, also making sure firstChoice isn't one of the ace stacks
                     if ((firstChoice).getID() == "**" && array2D[horizontalPos][verticalPos].getID() != " H" && array2D[horizontalPos][verticalPos].getID() != " D" && array2D[horizontalPos][verticalPos].getID() != " S" && array2D[horizontalPos][verticalPos].getID() != " C") {
                         firstChoice = array2D[horizontalPos][verticalPos]; // Sets firstChoice to card currently selected
                         firstX = horizontalPos;
@@ -346,25 +346,25 @@ void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& 
         switch (ex = _getch())
 
         {
-        case KEY_UP     /* H */:
-            if (verticalPos > 0) {
+        case KEY_UP: // If up arrow is pressed
+            if (verticalPos > 0) { // If not already at the top of the board, move up
                 verticalPos = verticalPos - 1;
-                while (array2D[horizontalPos][verticalPos].getID() == "  ") {
+                while (array2D[horizontalPos][verticalPos].getID() == "  ") { // If you move up to a black space, continue to move up until you hit a valid space
                     verticalPos = verticalPos - 1;
                 }
-                if (array2D[horizontalPos][verticalPos].getID() == "SS") {
+                if (array2D[horizontalPos][verticalPos].getID() == "SS") { // If you land on one of the "emtpy space" cards, which have an ID of SS and are used to create blank spaces as tall as cards for formatting, move back down to original card since you shouldn't be able to do that
                     verticalPos = verticalPos + 2;
                 }
             }
             break;
-        case KEY_DOWN   /* K */:
+        case KEY_DOWN: // If down arrow is pressed
             if (verticalPos < 16) {
                 verticalPos = verticalPos + 1;
-                if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos][verticalPos + 1].getID() == "  ") {
+                if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos][verticalPos + 1].getID() == "  ") { // If you land on a blank space, and the space after it is also blank, move back to your original position
                     verticalPos = verticalPos - 1;
                 }
                 else {
-                    while (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") {
+                    while (array2D[horizontalPos][verticalPos].getID() == "  " || array2D[horizontalPos][verticalPos].getID() == "SS") { // If you land on a blank space but the space after isn't blank, move down again
                         verticalPos = verticalPos + 1;
                     }
                 }
@@ -372,10 +372,10 @@ void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& 
                 
             }
             break;
-        case KEY_LEFT   /* M */:
+        case KEY_LEFT: // If left arrow is pressed
             if (horizontalPos > 0) {
                 horizontalPos = horizontalPos - 1;
-                if (horizontalPos > 0) {
+                if (horizontalPos > 0) { // Same as above, logic for continuing to move when you land on blank spaces
                     if (array2D[horizontalPos][verticalPos].getID() == "  " && array2D[horizontalPos - 1][verticalPos].getID() == "  ") {
                         horizontalPos = horizontalPos + 1;
                     }
@@ -395,8 +395,8 @@ void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& 
                 
             }
             break;
-        case KEY_RIGHT: /* P */
-            if (horizontalPos < 6) {
+        case KEY_RIGHT: // right arrow is pressed
+            if (horizontalPos < 6) { // Same logic as above, but also extra checks to make sure the vector doesn't go out of range
                 horizontalPos = horizontalPos + 1;
                 int tempCount = horizontalPos;
                 if (horizontalPos == 6) {
@@ -444,7 +444,7 @@ void SolitaireGame::handleUserInput(int& verticalPos, int& horizontalPos, Card& 
 }
 
 void SolitaireGame::makeTable(Deck& deck){
-    if (isFirstPass) {
+    if (isFirstPass) { // If this is the first time the makeTable function is called, popular all spaces in the board with cards from the deck
         Card tempCard = deck.drawCard();
         tempCard.flip();
         arr1[2] = tempCard;
@@ -491,9 +491,9 @@ void SolitaireGame::makeTable(Deck& deck){
         isFirstPass = false;
     }
 
-    array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 };
+    array2D = { arr1, arr2, arr3, arr4, arr5, arr6, arr7 }; // 2D array for storing columns of cards
 
-    // Define some sample cards (replace with your ASCII art)
+    // Creating columns to hold the ASCII art
     vector<string> col1;
     vector<string> col2;
     vector<string> col3;
@@ -502,10 +502,10 @@ void SolitaireGame::makeTable(Deck& deck){
     vector<string> col6;
     vector<string> col7;
 
-    // Create a vector of cards
+    // Create a 2D vector to hold the columns of ASCII art. There are 2 2D arrays, one that holds the actual instances of the cards, and one that holds the ASCII art that mirrors the first 2D array.
     vector<vector<string>> table = { col1, col2, col3, col4, col5, col6, col7 };
     
-    for (int i = 0; i < rows; i++) {
+    for (int i = 0; i < rows; i++) { // Loop for creating ASCII art for all of the cards in the first 2D array
         for (int x = 0; x < cols; x++) {
             if (array2D[i][x].getID() == "SS") {
                 table[i].push_back("           ");
@@ -516,9 +516,9 @@ void SolitaireGame::makeTable(Deck& deck){
             }
             else if(array2D[i][x].getID() != "  " && array2D[i][x+1].getID() == "  ") {
                 table[i].push_back("  _______  ");
-                if (array2D[i][x].getID().substr(0,2) == "10") {
+                if (array2D[i][x].getID().substr(0,2) == "10") { // Checks for 10s as the only number with 2 digits so have to account for it so formatting isn't broken
                     if (&(array2D[horizontalPos][verticalPos]) == &(array2D[i][x])) {
-                        table[i].push_back(" |" + array2D[i][x].getID() + "O   | ");
+                        table[i].push_back(" |" + array2D[i][x].getID() + "O   | "); // An 'O' character is added to the card ASCII art if it's the card currently selected by the player
                     }
                     else {
                         table[i].push_back(" |" + array2D[i][x].getID() + "    | ");
@@ -569,27 +569,24 @@ void SolitaireGame::makeTable(Deck& deck){
         }
     }
 
-    //currentCard = &table[horizontalPos];
-    //currentArea = verticalPos;
-
-    // Print cards horizontally
-
-    setCursorPosition(0, 0);
+    setCursorPosition(0, 0); // Set cursor position back to top left of the screen so the printTable function overwrites what's currently there, rather than having to clear the screen and reprint it. This fixes screen flickering
     printTable(table);
 }
 
-void SolitaireGame::printTable(vector<vector<string>> table) {
+void SolitaireGame::printTable(vector<vector<string>> table) { // Function to print the ASCII art
     cout << "Press enter to select a card, then enter again to confirm it or any other key to cancel." << endl;
     cout << "firstChoice: " << firstChoice.getID() << " | secondChoice: " << secondChoice.getID() << endl;
    
     string isO, isO10, suit, suit10;
-    for (int i = 0; i < 38; i++) { // Loops for the amount of strings inside cards[0] (which is card1) 
+    for (int i = 0; i < 38; i++) { // Loops for the amount of strings inside cards[0], as all the columns in the cards array have the same length
         for (int x = 0; x < rows; x++) { // For every col in table array
-            // Adjust spacing between cards as needed
+
             isO = table[x][i].substr(4, 1);
             isO10 = table[x][i].substr(5, 1);
             suit = table[x][i].substr(3, 1);
             suit10 = table[x][i].substr(4, 1);
+
+            // If the ASCII art has an 'O' in it, which is added when the card is currently selected by the user, remove the O and make the card green.
             if (isO == "O" || isO10 == "O") {
                 setTextColour(10);
                 replace(table[x][i].begin(), table[x][i].end(), 'O', ' ');
@@ -597,7 +594,7 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
             else{
                 setTextColour(15);
             }
-            if ((suit == "H" || suit == "D" || suit10 == "H" || suit10 == "D") && isO != "O" && isO10 != "O") {
+            if ((suit == "H" || suit == "D" || suit10 == "H" || suit10 == "D") && isO != "O" && isO10 != "O") { // If the card is hearts or diamonds, make it red
                 setTextColour(15);
                 cout << table[x][i].substr(0, 2);
                 setTextColour(12);
@@ -605,7 +602,7 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
                 setTextColour(15);
                 cout << table[x][i].substr(5, 7) << "   ";
             }
-            else if((suit == "S" || suit == "C" || suit10 == "S" || suit10 == "C") && isO != "O" && isO10 != "O") {
+            else if((suit == "S" || suit == "C" || suit10 == "S" || suit10 == "C") && isO != "O" && isO10 != "O") { // If it's suits or clubs, make it black
                 setTextColour(15);
                 cout << table[x][i].substr(0, 2);
                 setTextColour(9);
@@ -623,7 +620,7 @@ void SolitaireGame::printTable(vector<vector<string>> table) {
     }
 }
 
-void SolitaireGame::setTextColour(int color) {
+void SolitaireGame::setTextColour(int color) { // Function to change text colour
     static int __BACKGROUND;
 
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -636,7 +633,7 @@ void SolitaireGame::setTextColour(int color) {
         color + (__BACKGROUND << 4));
 }
 
-void SolitaireGame::setCursorPosition(int x, int y)
+void SolitaireGame::setCursorPosition(int x, int y) // Function to set cursor position
 {
     static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout.flush();
@@ -644,7 +641,7 @@ void SolitaireGame::setCursorPosition(int x, int y)
     SetConsoleCursorPosition(hOut, coord);
 }
 
-void SolitaireGame::resetChoices() {
+void SolitaireGame::resetChoices() { // Function that resets the first and second choice to emtpy, and then pauses until the user presses a key. After they do it clears the screen
     firstChoice = emtpy;
     secondChoice = emtpy;
     _getch();

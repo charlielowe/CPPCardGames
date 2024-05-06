@@ -47,14 +47,16 @@ int main() {
             SolitaireGame solitaire = SolitaireGame();
             system("cls");
             ShowConsoleCursor(false);
-            deck.makeDeck();
-         
+
+            // Create and shuffle the deck
+            deck.makeDeck(); 
             deck.shuffleDeck();
+
             cout << "\n\n\n" << endl;
             
-            vector<Card> cardDeck = deck.getDeck();
+            vector<Card> cardDeck = deck.getDeck(); // Make a copy of the deck
 
-            // Set pictures cards to have different values so can use them for comparrison when putting one card on top of another, since the card values have to be ascending 
+            // Set picture cards to have different values to use them for comparrison when putting one card on top of another, since the card values have to be ascending 
             for (Card& card : cardDeck) {
                 if (card.getRank() == "J") {
                     card.setValue(11);
@@ -69,7 +71,7 @@ int main() {
                     card.setValue(1);
                 }
             }
-            deck.setDeck(cardDeck);
+            deck.setDeck(cardDeck); // Replace original deck with the now modified copy
          
             solitaire.solitaireMain(deck);
             while (solitaire.hasQuit == false) { // Loop to run the game until the user quits
@@ -89,6 +91,6 @@ void ShowConsoleCursor(bool showFlag) {
     CONSOLE_CURSOR_INFO     cursorInfo;
 
     GetConsoleCursorInfo(out, &cursorInfo);
-    cursorInfo.bVisible = showFlag; // set the cursor visibility
+    cursorInfo.bVisible = showFlag;
     SetConsoleCursorInfo(out, &cursorInfo);
 }

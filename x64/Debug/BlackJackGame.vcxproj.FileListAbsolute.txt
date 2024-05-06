@@ -4,3 +4,4 @@ D:\VSRepos\CPPCardGames\x64\Debug\CardGames.exe
 S:\CPP\CPPCardGames\x64\Debug\CardGames.exe
 C:\Users\2303141\Source\Repos\CPPCardGames\x64\Debug\CardGames.exe
 D:\VSRepos\NewCardGames\x64\Debug\CardGames.exe
+C:\Users\charl\source\repos\CPPCardGames\x64\Debug\CardGames.exe
