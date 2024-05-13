@@ -3,7 +3,7 @@
   Main.cpp
   Card.cpp
   Deck.cpp
-C:\Users\charl\source\repos\CPPCardGames\Deck.cpp(67,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\2303141\Source\Repos\CPPCardGames\Deck.cpp(67,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   SolitaireGame.cpp
   Generating Code...
-  BlackJackGame.vcxproj -> C:\Users\charl\Source\Repos\CPPCardGames\x64\Debug\CardGames.exe
+  BlackJackGame.vcxproj -> C:\Users\2303141\Source\Repos\CPPCardGames\x64\Debug\CardGames.exe
